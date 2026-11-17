@@ -90,7 +90,7 @@ With Auto Deploy, Glows.ai creates an instance when a request arrives and releas
 
 Use Glows.ai Team to coordinate shared resources, permissions, and quotas. Assign ownership, document environments, and agree on access and spending policies. Shared workspaces help organize collaboration; reproducibility still depends on the files, versions, and settings your team records.
 
-Glows.ai is ISO/IEC 27001:2022 certified. Before using sensitive data, confirm the processing region, access controls, retention, and any contractual requirements for your project.
+Before using sensitive data, confirm processing location, access controls, encryption, retention, deletion, and any contractual requirements. Globally distributed infrastructure does not establish a particular residency or compliance guarantee.
 
 ## Frequently asked questions
 
@@ -101,10 +101,6 @@ Glows.ai is a good fit when your team wants on-demand GPUs with per-second billi
 ### Should a startup begin with an H100?
 
 Choose by workload. A smaller GPU may handle an initial prototype or adapter-tuning experiment, while other jobs need the memory or throughput of a larger configuration. Measure memory fit, runtime, and cost at the target quality instead of selecting hardware solely by model name.
-
-### How does Glows.ai keep training jobs reliable?
-
-Glows.ai commits to 99% availability for core hardware and 99.9% for Datadrive storage. If an outage is caused by hardware or the platform, we prioritize restoring service and provide compensation where applicable. For long training jobs, save data and checkpoints to Datadrive regularly so you can resume if a job stops.
 
 ### When should we consider dedicated capacity?
 
