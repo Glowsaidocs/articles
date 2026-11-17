@@ -1,0 +1,114 @@
+---
+id: "gpu_cloud_for_vllm_and_comfyui_en"
+title: "GPU Cloud for vLLM and ComfyUI: Performance and Cost"
+date: "2026-09-11 10:30"
+description: "Compare cloud GPUs for vLLM and ComfyUI by memory needs, software compatibility, latency, and the cost of useful tokens, images, or videos."
+tags: ["Cloud GPU", "vLLM", "ComfyUI", "GPU Cost Optimization"]
+meta_title: "GPU Cloud for vLLM and ComfyUI: Performance & Cost | Glows.ai"
+meta_description: "Compare GPU cloud options for vLLM and ComfyUI. Explore Glows.ai pricing, memory fit, setup, latency, and the cost of useful tokens, images, or videos."
+---
+
+# GPU Cloud for vLLM and ComfyUI: Performance and Cost
+
+When choosing the best GPU cloud for vLLM and ComfyUI, compare memory fit, software compatibility, useful throughput, and the cost of a completed workload. vLLM serves language-model requests, while ComfyUI runs node-based generation workflows. A configuration that performs well for one does not automatically suit the other.
+
+Glows.ai is a good fit for developers who want to configure these tools on on-demand GPUs with per-second billing. Its image catalog includes vLLM environments and ComfyUI images, including FLUX.1-Kontext. Start with an image and GPU that fit your workload, then measure latency, output quality, and complete run costs before scaling.
+
+## 1. Match the cloud configuration to the workload
+
+Both workloads need enough GPU memory, but they use it differently. For vLLM, model weights share memory with the key-value cache and runtime buffers. Context length and concurrent requests affect the memory requirement. For ComfyUI, the workflow may load several models and intermediate tensors; resolution, batch size, video length, and custom nodes can change the peak.
+
+| Requirement | vLLM | ComfyUI |
+| --- | --- | --- |
+| Memory fit | Model weights, KV cache, runtime buffers, and concurrency | Loaded models, intermediate tensors, resolution, and workflow stages |
+| Useful performance | Successful token throughput within the required latency target | Accepted images or videos per unit of time at the required quality |
+| Startup and I/O | Loading weights and preparing the serving runtime | Loading checkpoints, custom nodes, input media, and output files |
+| Access pattern | An application sends requests to a serving API | A user edits a browser workflow, or a client submits queued jobs |
+
+Choose a pilot configuration with memory headroom for your actual workload. An RTX 4090 has 24 GB of VRAM and can be a starting point for workloads that fit; A100 80GB and H100 80GB options provide larger memory capacity. Do not infer an exact model size, context limit, or image-generation capacity from GPU memory alone.
+
+If you plan to run vLLM and ComfyUI on the same instance, measure the combined memory and resource demand. Separate instances can make contention, scheduling, and per-workload cost easier to manage. Multiple GPUs do not automatically become one shared memory pool.
+
+## 2. Compare instance pricing with completed-work costs
+
+Glows.ai on-demand instance rates · USD per GPU-hour
+
+| NVIDIA GPU | Rate | What to verify |
+| --- | --- | --- |
+| RTX 4090 · 24 GB VRAM | $0.49 | Memory fit at your intended context or workflow settings |
+| L40S | $0.83 | Available configuration and measured workload throughput |
+| A100 80GB | $1.20 | Memory headroom and total runtime |
+| RTX PRO 6000 | $2.30 | Available variant and VRAM before sizing |
+| H100 80GB | $2.59 | Variant, GPU count, and whether performance offsets the hourly rate |
+
+Compute is billed per second. Contact Glows.ai for RTX 5090, H200, or B200 availability and pricing, and for large-volume H100 quotes. Confirm current rates and configurations before starting a run.
+
+These are on-demand GPU instance rates, not managed serverless endpoint or token prices. For an Inference on Cloud deployment, confirm the supported model and runtime, scaling behavior, and applicable billing separately. With Auto Deploy, Glows.ai creates an instance when a request arrives and releases it after an idle period, which limits charges for idle compute. Expect a cold start on the first request after release.
+
+GPU compute cost = Σ(GPU count × rate per GPU-hour × billable hours)
+
+Include billable loading, idle time, failed attempts, and retries in compute charges, then add separately billed storage, data transfer, and other services. See the service agreement for full terms.
+
+For vLLM, report cost per million successful output tokens alongside the input/output length distribution and latency target. For ComfyUI, report cost per accepted image or video with resolution and quality settings fixed. Include failed work in the cost numerator even when it produces no usable output.
+
+For illustration, one RTX 4090 billed for two hours at $0.49 per GPU-hour costs $0.98 in GPU compute. If that hypothetical run produces 100 accepted images, compute costs $0.0098 per image. The output count is an assumption, not a benchmark; storage and other charges are excluded.
+
+## 3. Tune vLLM against memory and latency targets
+
+vLLM uses techniques such as paged KV-cache management and continuous batching to improve serving efficiency. Their benefit depends on the model, request mix, hardware, and runtime settings. More concurrency can improve aggregate throughput while increasing queueing and tail latency, so measure both.
+
+- Fix the comparison conditions: Record the model and tokenizer versions, precision or quantization, maximum context, input/output lengths, and serving-runtime version. Check model and quantization support before deployment.
+
+- Measure prefill and decode: Track time to first token, output-token throughput, p50/p95 latency, errors, and peak VRAM while increasing concurrency gradually. Use a request mix that represents your application.
+
+- Use parallelism deliberately: Tensor parallelism can distribute a supported model across GPUs, but communication overhead and interconnect matter. Independent replicas can serve more requests; they do not necessarily reduce one request’s latency.
+
+An OpenAI-compatible API is available in supported vLLM serving configurations, but compatibility with particular API features must be checked. vLLM's server accepts requests without a key by default. Start it with `--api-key <your-key>` so requests without the key are rejected.
+
+## 4. Set up a repeatable ComfyUI workflow
+
+1. Choose and verify the image. Select a ComfyUI image suited to the workflow. Confirm the ComfyUI, Python, CUDA, PyTorch, custom-node, and model versions together; catalog availability does not guarantee every GPU/image combination.
+
+2. Configure access. Use SSH or JupyterLab for setup. ComfyUI runs on port 8188 and has no built-in login. For personal use, connect through an SSH tunnel: copy the SSH Command from your instance's Access tab and add `-L 8188:localhost:8188` after `ssh`, for example `ssh -L 8188:localhost:8188 -p <ssh-port> root@<host>`. Keep the session open, then open `http://localhost:8188` in your browser. VNC availability depends on the selected image.
+
+3. Save the full workflow. Record the workflow graph, model identifiers, custom-node versions, seeds, sampler, steps, and media dimensions. Instance disks are cleared on release. Keep models and outputs on DataDrive, and use Snapshot to save your installed environment before releasing the instance.
+
+Measure cold loading and warm execution separately. Profile individual nodes and I/O before changing precision, attention kernels, or parallel job counts, and recheck output quality after each change. API-driven or headless execution can automate submissions, but it does not provide authentication by itself.
+
+## 5. Run a representative pilot before scaling
+
+Keep the workload fixed while changing one configuration at a time. For vLLM, compare request mixes and concurrency at the same quality and latency requirements. For ComfyUI, use the same workflow, model files, dimensions, and sampling settings. Record successful outputs, failures, peak memory, total billable time, and applicable service charges.
+
+Include cold starts, idle periods, and realistic data loading rather than measuring only a warm inner loop. Repeat the pilot to check variability. If an optimization does not help, investigate memory pressure, compute, scheduling, I/O, and network limits rather than assuming one bottleneck.
+
+For shared work, Glows.ai Team brings GPU resources, environments, datasets, permissions, and quotas into one workspace. Agree on workload ownership and budget limits. If a managed endpoint is preferable, review Inference on Cloud separately; confirm compatibility and operating terms before moving a self-managed runtime.
+
+## Frequently asked questions
+
+### Does Glows.ai offer images for both vLLM and ComfyUI?
+
+Yes. The image catalog lists vLLM environments and ComfyUI images, including ComfyUI with FLUX.1-Kontext. Check the currently available image configuration, dependencies, and GPU compatibility for your chosen model or workflow.
+
+### Which GPU should I try first?
+
+Start with a configuration that fits the complete workload with headroom. An RTX 4090 24 GB option starts at $0.49 per GPU-hour. If memory is insufficient, compare a larger-memory option such as A100 80GB or H100 80GB, then measure the cost of useful output rather than assuming a fixed speedup.
+
+### Should I choose an always-on instance or autoscaling inference?
+
+Compare a representative traffic pattern, latency requirements, and complete charges. An always-on instance offers control over a running environment; an autoscaling service may help handle variable demand. Confirm cold-start behavior, minimum resources, and billing terms instead of assuming either option is cheaper.
+
+### Can I expose ComfyUI or a vLLM API directly?
+
+Configure appropriate authentication and restricted network access first. A browser UI, public IP, API mode, or OpenAI-compatible request format is not an access-control mechanism. Keep administrative access separate and test the intended client connection.
+
+## Start with a workload you can measure
+
+Choose the model or workflow, verify the image and memory fit, then compare latency, accepted outputs, and completed-work costs. Explore Glows.ai On-Demand Cloud to configure a vLLM or ComfyUI pilot, or discuss managed inference requirements with our team.
+
+[Explore On-Demand Cloud](https://glows.ai/product/on-demand-cloud)
+
+[Explore Inference on Cloud](https://glows.ai/product/inference-on-cloud)
+
+[Read the Glows.ai documentation](https://docs.glows.ai)
+
+[Contact Glows.ai](mailto:hi@glows.ai)
