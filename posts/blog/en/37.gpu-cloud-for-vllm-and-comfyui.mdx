@@ -43,11 +43,11 @@ Glows.ai on-demand instance rates · USD per GPU-hour
 
 Compute is billed per second. Contact Glows.ai for RTX 5090, H200, or B200 availability and pricing, and for large-volume H100 quotes. Confirm current rates and configurations before starting a run.
 
-These are on-demand GPU instance rates, not managed serverless endpoint or token prices. For an Inference on Cloud deployment, confirm the supported model and runtime, scaling behavior, and applicable billing separately. Autoscaling alone does not establish whether idle resources are charged.
+These are on-demand GPU instance rates, not managed serverless endpoint or token prices. For an Inference on Cloud deployment, confirm the supported model and runtime, scaling behavior, and applicable billing separately. With Auto Deploy, Glows.ai creates an instance when a request arrives and releases it after an idle period, which limits charges for idle compute. Expect a cold start on the first request after release.
 
 GPU compute cost = Σ(GPU count × rate per GPU-hour × billable hours)
 
-Include billable loading, idle time, failed attempts, and retries in compute charges, then add separately billed storage, data transfer, and other services. Avoid counting the same setup or retry compute twice. Marketplace listings and interruptible instances also need their own availability and recovery checks; fixed pricing is not an uptime guarantee.
+Include billable loading, idle time, failed attempts, and retries in compute charges, then add separately billed storage, data transfer, and other services. Glows.ai commits to 99% availability for core hardware and 99.9% for DataDrive storage. See the service agreement for full terms.
 
 For vLLM, report cost per million successful output tokens alongside the input/output length distribution and latency target. For ComfyUI, report cost per accepted image or video with resolution and quality settings fixed. Include failed work in the cost numerator even when it produces no usable output.
 
@@ -63,15 +63,15 @@ vLLM uses techniques such as paged KV-cache management and continuous batching t
 
 - Use parallelism deliberately: Tensor parallelism can distribute a supported model across GPUs, but communication overhead and interconnect matter. Independent replicas can serve more requests; they do not necessarily reduce one request’s latency.
 
-An OpenAI-compatible API is available in supported vLLM serving configurations, but compatibility with particular API features must be checked. Protect the endpoint with appropriate authentication and network access controls; deploying a serving process does not automatically provide those controls.
+An OpenAI-compatible API is available in supported vLLM serving configurations, but compatibility with particular API features must be checked. vLLM's server accepts requests without a key by default. Start it with `--api-key <your-key>` so requests without the key are rejected.
 
 ## 4. Set up a repeatable ComfyUI workflow
 
 1. Choose and verify the image. Select a ComfyUI image suited to the workflow. Confirm the ComfyUI, Python, CUDA, PyTorch, custom-node, and model versions together; catalog availability does not guarantee every GPU/image combination.
 
-2. Configure access. Use SSH or JupyterLab for setup. ComfyUI commonly uses port 8188, but external access still needs configuration. Use an authenticated access layer or SSH tunnel rather than exposing an unprotected UI. VNC availability depends on the selected image.
+2. Configure access. Use SSH or JupyterLab for setup. ComfyUI runs on port 8188 and has no built-in login. For personal use, connect through an SSH tunnel: copy the SSH Command from your instance's Access tab and add `-L 8188:localhost:8188` after `ssh`, for example `ssh -L 8188:localhost:8188 -p <ssh-port> root@<host>`. Keep the session open, then open `http://localhost:8188` in your browser. VNC availability depends on the selected image.
 
-3. Save the full workflow. Record the workflow graph, model identifiers, custom-node versions, seeds, sampler, steps, and media dimensions. Confirm where assets and outputs remain available after the instance ends, and test retrieval before a long session.
+3. Save the full workflow. Record the workflow graph, model identifiers, custom-node versions, seeds, sampler, steps, and media dimensions. Instance disks are cleared on release. Keep models and outputs on DataDrive, and use Snapshot to save your installed environment before releasing the instance.
 
 Measure cold loading and warm execution separately. Profile individual nodes and I/O before changing precision, attention kernels, or parallel job counts, and recheck output quality after each change. API-driven or headless execution can automate submissions, but it does not provide authentication by itself.
 
