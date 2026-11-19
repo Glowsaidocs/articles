@@ -24,7 +24,7 @@ Glows.ai offers On-Demand Cloud, Inference on Cloud and Inference on Dedicated C
 | Inference on Cloud | The application needs an inference service that autoscales | Supported deployment, response under changing traffic and the applicable billing terms |
 | Inference on Dedicated Cloud | The deployment calls for isolated inference with encryption requirements | Proposed capacity, isolation and encryption scope, operating responsibilities and acceptance criteria |
 
-Glows.ai describes Inference on Dedicated Cloud as an isolated, end-to-end encrypted offering. During evaluation, document how those protections apply to your proposed deployment, including request handling, logs and operational access. Agree on the scope in the service proposal so your security review and technical design use the same assumptions.
+During evaluation, document how the proposed security controls apply to your proposed deployment, including request handling, logs and operational access. Agree on the scope in the service proposal so your security review and technical design use the same assumptions.
 
 For a self-managed prototype, Glows.ai's public image catalog includes vLLM images, and instance access includes SSH and JupyterLab. This gives engineers a starting environment for configuring and measuring their own server. A prototype's measurements can inform a dedicated-service discussion; confirm the target runtime and supported configuration for that deployment.
 
@@ -76,7 +76,7 @@ Dedicated inference works well when the application team and service provider ag
 
 These are items to agree for your deployment. Record the owner, evidence and acceptance decision for each.
 
-Glows.ai Team supports shared GPU resources, environments, datasets, permissions and quotas. That can help the engineers running a shared prototype coordinate resources and access. Keep the serving runbook alongside a reproducible model and environment manifest so another team member can repeat the evaluation.
+Glows.ai Team supports shared GPU resources, environments, datasets, permissions and quotas. That can help the engineers running a shared prototype coordinate resources and access. You can also restrict which IP addresses can reach your instances with IP ACL rules. Keep the serving runbook alongside a reproducible model and environment manifest so another team member can repeat the evaluation.
 
 ## Turn the evidence into an acceptance decision
 
@@ -92,7 +92,7 @@ Attach your pilot results and responsibility worksheet. Your purchasing checklis
 
 - Itemized charges, commitment terms and a forecast based on measured traffic.
 
-- A model-update procedure and a plan for exporting your model artifacts and configuration.
+- A model-update procedure and a plan for exporting your model artifacts and configuration. Keeping artifacts on Datadrive lets you download them without running an instance.
 
 Choose the configuration that passes these criteria with acceptable operating effort. A successful pilot gives engineering, security and procurement the same concrete basis for approval.
 
@@ -111,3 +111,7 @@ Yes. On-Demand Cloud and cataloged vLLM images provide a starting point for a se
 Autoscaling is one input. The workload, capacity arrangement, billing terms and successful throughput determine the bill. Measure changing traffic and reconcile the quoted charges during the pilot.
 
 Bring your workload brief to [Glows.ai](https://glows.ai) to discuss the appropriate deployment. Use the [official documentation](https://docs.glows.ai) to prepare your self-managed prototype, and request a proposal tied to your model, traffic and acceptance criteria.
+
+[Explore Inference on Dedicated Cloud](https://glows.ai/product/inference-on-dedicated-cloud)
+
+[Contact Glows.ai](mailto:hi@glows.ai)
