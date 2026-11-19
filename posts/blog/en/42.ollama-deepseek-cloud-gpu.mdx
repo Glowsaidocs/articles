@@ -10,7 +10,7 @@ meta_description: "GPU cloud with preinstalled Ollama and DeepSeek - Check Ollam
 
 # GPU Cloud with Preinstalled Ollama and DeepSeek? Verify the Image First
 
-If you are looking for a GPU cloud with preinstalled Ollama and DeepSeek, check the image contents in two parts: the serving runtime and the model weights. Glows.ai lists Ollama images and separate DeepSeek images. Those entries give you useful deployment choices; they do not establish that one image bundles both Ollama and your chosen DeepSeek model.
+If you are looking for a GPU cloud with preinstalled Ollama and DeepSeek, check the image contents in two parts: the serving runtime and the model weights. Glows.ai lists Ollama images and separate DeepSeek images. Glows.ai offers Ollama images with models already installed, as well as ready-to-use DeepSeek-R1 images, so you can start from a prebuilt environment.
 
 A short inspection turns that distinction into a clear launch plan. Identify the server you are connecting to, check its model inventory, choose a model that fits, and validate one request before exposing an API or increasing concurrency.
 
@@ -80,7 +80,7 @@ For self-hosted LLM APIs, extend the check to simultaneous requests, time to fir
 
 ## 5. Protect the service before connecting an application
 
-First validate access through your controlled development connection. Before exposing an HTTP service, confirm its listening address, port mapping, authentication, and network access restrictions. An API key field in a client library does not prove that the server validates that key.
+First validate access through your controlled development connection. The local API of a self-hosted Ollama server does not require authentication, so for personal use, connect through an SSH tunnel. Before exposing an HTTP service, confirm its listening address, port mapping, authentication, and network access restrictions. An API key field in a client library does not prove that the server validates that key.
 
 Keep model-service URLs and secrets out of public notebooks and screenshots. If a request fails, separate connection errors from model-loading errors: service reachability, successful authentication, and a completed model response are three different checks.
 
@@ -90,6 +90,6 @@ Verify the API features your application uses. An OpenAI-compatible interface ca
 
 Glows.ai bills instance GPU compute per second. Downloads, startup, troubleshooting, and idle serving can all occupy billable instance time. Model unloading frees runtime memory; it does not establish that instance billing has stopped. Use the resource's actual billing state when closing the session.
 
-Save the exact image and model identifiers, runtime configuration, dependency versions, and a small validation request. Confirm storage and lifecycle behavior before stopping or replacing the resource. A model listed by a remote server is not a backup of its weights.
+Save the exact image and model identifiers, runtime configuration, dependency versions, and a small validation request. Instance disks are cleared on release, including models downloaded with Ollama, so save what you need to Datadrive or take a Snapshot before releasing the instance. A model listed by a remote server is not a backup of its weights.
 
 The result should be a deployment you can explain: which image supplies the runtime, which server holds the model, which hardware runs it, and how an authenticated application reaches it. Start there, then grow the context and request load with evidence from your own workload.
