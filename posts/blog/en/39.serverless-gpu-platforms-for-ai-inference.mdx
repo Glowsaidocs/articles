@@ -10,7 +10,7 @@ meta_description: "Best serverless GPU platforms for AI inference — Evaluate G
 
 # Serverless GPU Platforms for AI Inference: A 2026 Guide
 
-When comparing the best serverless GPU platforms for AI inference, start with your model, traffic pattern, latency target, and cost per useful result. Look for a service that can run your workload and adjust capacity as demand changes. Then test startup behavior, performance under load, billing, and data handling. The serverless label alone does not guarantee instant responses, scale-to-zero, or a lower bill.
+When comparing the best serverless GPU platforms for AI inference, start with your model, traffic pattern, latency target, and cost per useful result. Look for a service that can run your workload and adjust capacity as demand changes. Then test startup behavior, performance under load, billing, and data handling.
 
 Glows.ai offers Inference on Cloud for autoscaling inference and Inference on Dedicated Cloud for isolated inference resources with end-to-end encryption. Inference on Cloud is worth evaluating when you want managed inference capacity that adapts to demand. Confirm model support, endpoint pricing, scaling limits, and deployment requirements for the service you choose.
 
@@ -44,19 +44,19 @@ Record failures, timeouts, and throttling alongside successful responses. Report
 
 ### Treat cold starts as a measured trade-off
 
-A cold start can involve capacity allocation, environment initialization, model loading, and runtime warm-up. Ask which stages affect your first response. If a provider supports warm capacity, test its latency benefit against the cost of keeping resources ready. Do not assume a minimum replica setting or a particular startup time exists.
+A cold start can involve capacity allocation, environment initialization, model loading, and runtime warm-up. Ask which stages affect your first response. If a provider supports warm capacity, test its latency benefit against the cost of keeping resources ready. On Glows.ai Auto Deploy, the Instance Idle Retention Period (3 to 90 minutes) sets how long an instance stays running after the last request, so you can trade idle cost for fewer cold starts.
 
 Batching can improve aggregate throughput while increasing time spent waiting. Longer contexts and higher concurrency can also increase KV-cache memory. Measure the resulting memory use and latency before raising concurrency or changing batch settings.
 
 ## 3. Calculate inference costs using the endpoint's billing terms
 
-Obtain a quote for the inference service you intend to deploy. Glows.ai's public on-demand GPU-hour rates describe GPU instances; they should not be presented as Inference on Cloud endpoint rates or converted into per-token prices without a service quote and measured throughput.
+Inference on Cloud runs on GPU instances billed per second at the same on-demand rates, so you can estimate costs from the pricing page and your measured throughput.
 
 - Billing unit: Confirm whether the service charges for GPU time, tokens, requests, reserved capacity, or a combination, including minimum charges and rounding rules.
 
 - Billable duration: For time-based charges, check whether startup, warm idle capacity, queued work, shutdown delays, and retries are billable. Count each billed period once.
 
-- Other resources: Include separately charged storage, model artifacts, data transfer, and optional services. Check what is already bundled before adding costs.
+- Other resources: Include separately charged storage, such as your Datadrive plan and Snapshots (billed per GB-hour starting December 1, 2026). Glows.ai does not normally charge separately for data transfer.
 
 - Failed requests: Check charges for errors, timeouts, and retries, as well as the application's behavior when a request is submitted more than once.
 
@@ -82,27 +82,27 @@ Monitor user-visible latency, completion quality, errors, queueing, and spend. U
 
 ### Check security and governance separately
 
-Confirm processing location, isolation, encryption scope, retention, deletion, and access controls for prompts, outputs, weights, and logs. Avoid recording sensitive content unnecessarily. A globally distributed platform does not establish a particular data-residency guarantee, and dedicated resources alone do not establish regulatory compliance.
+Confirm processing location, isolation, encryption scope, retention, deletion, and access controls for prompts, outputs, weights, and logs. Avoid recording sensitive content unnecessarily.
 
-Glows.ai Team provides shared GPU resources, environments, datasets, permissions, and quotas. Confirm how the selected inference deployment integrates with your team's access and budget processes. Do not assume that SSO, endpoint-specific audit trails, or deployment approvals are included without checking.
+Glows.ai Team provides shared GPU resources, environments, datasets, permissions, and quotas. Confirm how the selected inference deployment integrates with your team's access and budget processes.
 
 ## Frequently asked questions
 
 ### Does serverless GPU inference always scale to zero?
 
-No. Check the specific service's minimum capacity, idle policy, and billing. Glows.ai Inference on Cloud supports autoscaling; confirm scale-to-zero behavior and any remaining charges directly before relying on them in a budget or application design.
+It depends on the service. With Glows.ai Auto Deploy, instances are released after the idle period you set, and remain released until a new request arrives. The first request after release has a cold start.
 
 ### When should I consider dedicated inference?
 
-Evaluate dedicated resources when isolation is important to your deployment. Glows.ai Inference on Dedicated Cloud provides isolated resources and end-to-end encryption. Confirm the implementation, operating terms, and data-handling requirements rather than assuming a compliance certification or deterministic performance.
+Evaluate dedicated resources when isolation is important to your deployment. Glows.ai Inference on Dedicated Cloud provides isolated resources and end-to-end encryption. Contact us to discuss your isolation and data-handling requirements.
 
 ### Can I use GPU instance prices to estimate serverless token costs?
 
-Not directly. Instance rates and managed endpoint pricing may cover different services. Obtain the applicable quote, measure throughput at your required latency and quality, and include startup, idle capacity, and other charges specified by that service.
+Inference on Cloud uses the same on-demand instance rates, billed per second. To estimate compute cost per token during active serving, divide the per-second compute rate by measured tokens per second at your required latency and quality. For the full evaluation period, divide total charges, including startup, idle time, and applicable storage, by the total qualifying tokens produced.
 
 ### How can I reduce cold-start delays?
 
-Measure where the delay occurs, then evaluate supported warm-capacity or model-loading options. Compare the latency benefit with any additional idle cost. Confirm available controls with the provider instead of assuming warm pools or regional pre-warming are supported.
+Measure where the delay occurs first. With Auto Deploy, a longer Instance Idle Retention Period keeps instances running between requests, which means fewer cold starts but more idle cost. Keeping Snapshots small also helps instances start faster.
 
 ### Is a managed endpoint always cheaper than running my own GPU?
 
@@ -119,3 +119,5 @@ Define what a useful result means, test realistic traffic, and compare the full 
 [Explore Glows.ai Team](https://glows.ai/product/glows-ai-team)
 
 [Contact Glows.ai](mailto:hi@glows.ai)
+
+[Read the Auto Deploy guide](https://docs.glows.ai/docs/auto-deploy)
