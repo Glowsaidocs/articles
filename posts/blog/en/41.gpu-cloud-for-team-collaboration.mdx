@@ -70,13 +70,13 @@ Dataset access is only part of a reproducible experiment. Identify the exact dat
 
 Avoid treating one mutable folder as a complete history. A teammate should know which input produced which checkpoint or evaluation result. Keep shared input data separate from a run’s working files, and document the process for publishing a new dataset version.
 
-Confirm what remains accessible after compute ends and under which storage terms. Test checkpoint or output retrieval before relying on a long job. These retention and recovery checks apply even when the workspace itself remains available.
+Instance disks are cleared on release, so keep shared data on the team Datadrive and share Snapshots with the team. Test checkpoint or output retrieval before relying on a long job. These retention and recovery checks apply even when the workspace itself remains available.
 
 ## Make access and cost ownership explicit
 
-Glows.ai Team includes permissions and quotas. Use the available controls to align access with responsibilities, and review access when a project or membership changes. Confirm the specific actions and limits available in the selected workspace configuration.
+Glows.ai Team includes permissions and quotas. Use the available controls to align access with responsibilities, and review access when a project or membership changes. Glows.ai Team has Owner, Admin, and Member roles, and Admins can set what each member can use.
 
-Maintain an explicit resource owner and cleanup procedure. Quotas, cost attribution, and hard budget enforcement are different controls; verify their behavior rather than assuming one supplies the others. A project ledger is useful even before the team adopts a more automated reporting process.
+Maintain an explicit resource owner and cleanup procedure. On Glows.ai Team, the Owner assigns Credits to each member, so members can only spend what they have been given, and Admin View shows each member's spending. A project ledger is useful even before the team adopts a more automated reporting process.
 
 For on-demand compute, use:
 
@@ -104,14 +104,18 @@ Glows.ai Team is worth evaluating when shared resources, environments, data, per
 
 ### What does Glows.ai Team share?
 
-Shared GPU resources, environments, datasets, permissions, and quotas. Check the selected workspace’s operating details and use a run record to preserve experiment-specific settings.
+Shared GPU resources, environments, datasets, permissions, and quotas. Use a run record to preserve experiment-specific settings.
 
 ### Is this useful for a small startup?
 
-Yes, when more than one person needs to inspect, continue, or validate GPU work. Begin with one project and a small handoff exercise before extending the workflow across more jobs.
+Yes, when more than one person needs to inspect, continue, or validate GPU work. Begin with one project and a small handoff exercise before extending the workflow across more jobs. The Free plan includes up to 3 seats, so a small team can try the workflow without a plan fee.
 
 ### Does a shared environment automatically preserve every experiment?
 
-Record versions, settings, data, and artifacts, and confirm file-retention terms. A workspace or image does not by itself establish that every changed file or training state will return in the next session.
+No. Instance disks are cleared on release. Save data and checkpoints to Datadrive and take a Snapshot to keep the environment, then record versions and settings in a run record.
 
 Explore [Glows.ai](https://glows.ai/) and the [Glows.ai documentation](https://docs.glows.ai/) to plan a team workspace around a real experiment and a repeatable handoff.
+
+[Explore Glows.ai Team](https://glows.ai/product/glows-ai-team)
+
+[Read the Glows.ai Team guide](https://docs.glows.ai/docs/team)
