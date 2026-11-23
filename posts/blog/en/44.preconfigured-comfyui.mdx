@@ -18,7 +18,7 @@ The useful next step is to turn that image into a repeatable working session. Ch
 
 Choose one task before choosing hardware: edit an existing image, generate a still image, or develop a more elaborate graph. Record the model family, intended resolution, batch size, required custom nodes, and expected output type. A workflow designed for one model family may require different encoders, loaders, or adapters from another.
 
-For a FLUX.1-Kontext project, the Glows.ai catalog lists an application image with Ubuntu 24.04, CUDA 12.8, Python 3.11, PyTorch 2.7.1, ComfyUI, and JupyterLab/VNC. Before launch, check that your chosen GPU and workflow meet the image’s requirements.
+For a FLUX.1-Kontext project, the Glows.ai catalog lists an application image with Ubuntu 24.04, CUDA 12.8, Python 3.11, PyTorch 2.7.1, ComfyUI, and VNC. Before launch, check that your chosen GPU and workflow meet the image’s requirements.
 
 A framework image is also useful when you want to assemble the environment yourself. Read the selected image description before launch; a familiar ComfyUI name alone does not tell you which model weights and custom nodes are present.
 
@@ -40,7 +40,7 @@ Avoid making your first session a large batch. A small, representative workflow 
 
 ## 2. Establish controlled access
 
-Glows.ai supports SSH and JupyterLab for working with your instance. Use the access details provided for your selected deployment to inspect files, read logs, and manage the environment. VNC availability depends on the image.
+Glows.ai supports SSH for working with your instance. Use the access details provided for your selected deployment to inspect files, read logs, and manage the environment. VNC availability depends on the image.
 
 For the browser interface, confirm which service and port the image actually exposes. ComfyUI commonly uses port 8188, but the deployment configuration remains the reference for reaching your running service. Do not assume that a browser link means authentication has been configured.
 
