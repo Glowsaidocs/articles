@@ -18,7 +18,7 @@ meta_description: "提供預先設定 ComfyUI 映像的 GPU 雲端 — 評估 Gl
 
 選擇硬體前，先決定一項任務：編輯現有圖像、生成靜態圖像，或開發更複雜的節點圖。記錄模型系列、預計解析度、批次大小、所需的自訂節點，以及預期的輸出類型。為某個模型系列設計的工作流程，可能需要與其他系列不同的編碼器、載入器或適配器。
 
-如果要做 FLUX.1-Kontext 專案，可以選擇 ComfyUI FLUX.1-Kontext 映像，內含 Ubuntu 24.04、CUDA 12.8、Python 3.11、PyTorch 2.7.1、ComfyUI、FLUX.1-Kontext、JupyterLab 與 VNC。啟動前，請確認所選 GPU 與工作流程符合映像的需求。
+如果要做 FLUX.1-Kontext 專案，可以選擇 ComfyUI FLUX.1-Kontext 映像，內含 Ubuntu 24.04、CUDA 12.8、Python 3.11、PyTorch 2.7.1、ComfyUI、FLUX.1-Kontext 與 VNC。啟動前，請確認所選 GPU 與工作流程符合映像的需求。
 
 如果你想自行組建環境，框架映像也很實用。啟動前請閱讀所選映像的說明；僅憑熟悉的 ComfyUI 名稱，無法判斷其中有哪些模型權重與自訂節點。
 
@@ -40,7 +40,7 @@ GPU 記憶體需求會隨精度、解析度、批次大小及節點圖本身而�
 
 ## 2. 建立受控的存取方式
 
-Glows.ai 支援透過 SSH 操作實例，ComfyUI 映像也內建 JupyterLab，可以直接在瀏覽器裡瀏覽檔案、查看日誌、開終端機。是否提供 VNC，取決於映像。
+Glows.ai 支援透過 SSH 操作實例。請使用所選部署提供的存取資訊，檢查檔案、閱讀日誌並管理環境。是否提供 VNC，取決於映像。
 
 個人使用時，最簡單又安全的方式是透過 SSH 通道開啟 ComfyUI。ComfyUI 使用 8188 port，本身沒有登入機制，只要在實例 Access 頁的 SSH Command 加上 `-L 8188:localhost:8188`，保持連線，再用瀏覽器開啟 `http://localhost:8188` 即可。
 
