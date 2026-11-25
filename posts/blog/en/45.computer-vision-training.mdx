@@ -44,6 +44,7 @@ The following are confirmed October 2026 Glows.ai on-demand references in USD pe
 | GPU | Reference rate | Pilot question |
 | --- | --- | --- |
 | RTX 4090 24GB | $0.49 | Does the full training recipe fit within 24GB? |
+| L40S 48GB | $0.83 | Does 48GB fit the recipe without moving to an 80GB GPU? |
 | A100 80GB | $1.20 | Does additional memory enable a useful batch or resolution? |
 | H100 80GB | $2.59 | Does measured completion time justify the higher rate? |
 
@@ -63,13 +64,13 @@ Keep a small development subset for diagnosing installation and pipeline errors.
 
 Measure loading and preprocessing alongside GPU execution. Image decoding, random crops, augmentation, remote reads and annotation parsing can starve an otherwise capable accelerator.
 
-Compare a short run using the intended data path with a controlled diagnostic run. Inspect loader wait time, host memory pressure and whether increasing worker count helps or creates contention.
+Compare a short run using the intended data path with a controlled diagnostic run. Inspect loader wait time, host memory pressure and whether increasing worker count helps or creates contention. The Monitor view on your instance page shows GPU utilization and system memory over time, which makes a starved data loader easy to spot.
 
-Keep the storage location and caching conditions in the result record. A warmed cache and a cold remote read are different test conditions. If preparation happens during billed instance time, include that time in the budget.
+Keep the storage location and caching conditions in the result record. A warmed cache and a cold remote read are different test conditions. Datadrive makes this comparison easier: every instance in the same region can mount the same dataset, so you can test several GPUs without copying data around. Keep the dataset in the region of the GPU you test (H100 currently runs in JP-01), and if the dataset fits on the instance disk, compare reading from Datadrive with a local copy. If preparation happens during billed instance time, include that time in the budget.
 
 ## Compare cost to an accepted checkpoint
 
-Run the same recipe on each viable configuration. Record training time, validation time, checkpoint writes, retries and the metric reached. Include all applicable billable periods rather than counting only the fastest batches.
+Run the same recipe on each viable configuration. Record training time, validation time, checkpoint writes, retries and the metric reached. Include all applicable billable periods rather than counting only the fastest batches. For long runs, you can release the instance with the Glows.ai SDK API once training finishes, so it doesn't keep billing overnight.
 
 For a hypothetical two-hour RTX 4090 allocation at the October reference, compute costs 2 × $0.49 = $0.98. That is arithmetic for a chosen duration, not a measured training result or a complete service invoice.
 
@@ -81,13 +82,13 @@ Keep engineering effort separate from the infrastructure invoice. A prepared env
 
 Test saving and loading before a long training run. A resumable checkpoint may need optimizer, scheduler and mixed-precision state in addition to model weights. Preserve label mappings and preprocessing settings for later inference.
 
-Ask where artifacts remain after compute ends and test retrieval through the intended process. Do not assume runtime files automatically follow you to a new allocation.
+Datadrive keeps checkpoints, label mappings, and logs after the instance is released, and Snapshot keeps your installed environment, so the next run starts where this one ended. Instance disks are cleared on release, so save to these first.
 
-For team handoff, keep the image identifier, code commit, dataset revision, configuration, validation result and artifact locations together. Have another authorized engineer repeat evaluation of the saved checkpoint. This catches undocumented dependencies without requiring an identical numerical result from every training run.
+For team handoff, keep the image identifier, code commit, dataset revision, configuration, validation result and artifact locations together. Have another authorized engineer repeat evaluation of the saved checkpoint. This catches undocumented dependencies without requiring an identical numerical result from every training run. With Glows.ai Team, you can share the Snapshot with teammates so they start from the same environment.
 
 ## Expand only after the baseline works
 
-More GPUs may help when completion time or experiment throughput becomes the constraint. Glows.ai also offers cluster product options, but scaling requires its own configuration and pilot.
+More GPUs may help when completion time or experiment throughput becomes the constraint. Glows.ai offers 8× H100 instances with NCCL support for distributed training, and Mesh Clustering connects multiple instances over a private network. Scaling still requires its own configuration and pilot.
 
 Preserve the effective training conditions when comparing allocations. Changing batch size or learning-rate behavior can change convergence. Measure useful scaling, data throughput and validation quality instead of assuming that doubling GPUs halves cost.
 
