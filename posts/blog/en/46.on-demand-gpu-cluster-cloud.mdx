@@ -31,11 +31,11 @@ For independent experiments, a pool of workers may be sufficient. For tightly co
 
 ## Where Glows.ai fits
 
-Glows.ai gives developers access to NVIDIA GPUs ranging from RTX 4090 to B200, alongside its cluster product options. The practical advantage is having a single platform to evaluate for small experiments, coordinated workloads and shared team resources.
+Glows.ai gives developers access to NVIDIA GPUs ranging from RTX 4090 to B300, alongside its cluster product options. The practical advantage is having a single platform to evaluate for small experiments, coordinated workloads and shared team resources.
 
 Use On-Demand Cloud to establish a baseline. Discuss Virtualized On-Demand Clusters when you need a coordinated configuration, and Bare Metal Clusters when the workload or operating requirements call for that deployment model. Obtain configuration-specific details before choosing between them.
 
-Glows.ai Team adds shared GPU resources, environments, datasets, permissions and quotas. Those capabilities help organize a pilot across engineers. They do not replace a distributed launcher or establish a particular cluster network.
+Glows.ai Team adds shared GPU resources, environments, datasets, permissions and quotas. Teammates can launch from a shared Snapshot and read the same data from the team Datadrive, so every engineer in the pilot starts from the same setup.
 
 ## Choose the workload before choosing the cluster
 
@@ -51,13 +51,13 @@ Ask for a written configuration covering GPU count and variant, GPUs per node, C
 
 Then confirm how the job starts. Does the proposed setup support your framework's distributed backend? Who installs or manages the orchestrator? Which network paths and permissions must your application use?
 
-Do not infer InfiniBand, NVLink, RDMA, a managed scheduler or a bandwidth figure from the word “cluster.” For Glows.ai, obtain the topology and operational responsibilities for the specific proposal. This makes the platform comparison concrete rather than relying on an architecture label.
+Do not infer InfiniBand, NVLink, RDMA, a managed scheduler or a bandwidth figure from the word “cluster.” On Glows.ai, full 8× H100 nodes support NVLink, while RTX 4090, L40S, and RTX PRO 6000 connect multiple GPUs over PCIe. NCCL is supported for multi-GPU communication, and Mesh Clustering puts instances in the same region on a private network. For multi-node clusters, ask us for the topology and operational responsibilities of the specific proposal.
 
 ## Measure scaling with one unchanged task
 
 Run a representative baseline on the smallest viable configuration. Repeat the same workload on the proposed larger allocation, preserving the input, training objective and acceptance conditions.
 
-Record completed work per second, total elapsed time, GPU count, memory use, data-loading time, communication overhead and checkpoint duration. Inspect slow workers: synchronized jobs can spend time waiting for a single bottleneck.
+Record completed work per second, total elapsed time, GPU count, memory use, data-loading time, communication overhead and checkpoint duration. Inspect slow workers: synchronized jobs can spend time waiting for a single bottleneck. The Monitor view on each instance page shows GPU utilization and memory over time, which helps you find the worker holding the others back.
 
 For the same amount of completed work:
 
@@ -77,15 +77,15 @@ The following example is hypothetical. It assumes the same completed task and th
 
 The three-hour outcome finishes sooner but consumes 50% more GPU-hours. The 1.5-hour outcome consumes 25% fewer. Neither follows automatically from renting four cards.
 
-For the invoice, apply the actual quote and its billing rules. If a quote is per node, use the node price; do not multiply it again as though it were a per-GPU price. Confirm minimum allocation, commitment, setup time and separately charged services. A published single-instance rate is not a cluster quote.
+For the invoice, apply the actual quote and its billing rules. If a quote is per node, use the node price; do not multiply it again as though it were a per-GPU price. Glows.ai on-demand instances are billed per second with no minimum rental time, and data transfer is not normally charged separately. Virtualized On-Demand Clusters and Bare Metal Clusters are quoted per configuration, so confirm minimum allocation, commitment, and setup time in the quote.
 
 ## Make failure and handoff part of the pilot
 
-Save a checkpoint or intermediate result, then test whether the job can resume using the intended storage arrangement. For training, resumption may require optimizer and scheduler state as well as weights.
+Save a checkpoint or intermediate result, then test whether the job can resume using the intended storage arrangement. For training, resumption may require optimizer and scheduler state as well as weights. On Glows.ai, every instance in the same region can mount the same Datadrive, so all workers can read one dataset and write checkpoints to one place that remains after the instances are released.
 
 Keep a run record with the image identifier, code commit, model and dataset revisions, launch command, worker count and artifact locations. Ask another authorized teammate to reproduce the launch procedure. Shared access is useful; explicit instructions make that access operational.
 
-Agree how to release the allocation and verify its billing state after the run. A completed script does not establish that rented compute has stopped billing.
+Agree how to release the allocation after the run. On-demand instances stop billing when they are released, and the Glows.ai SDK API lets you release them from your workflow once the job finishes, so idle nodes don't keep billing.
 
 ## Questions before choosing a cluster
 
@@ -95,11 +95,11 @@ No. A larger allocation can improve completion time or experiment throughput, bu
 
 ### Does Glows.ai offer on-demand and bare-metal cluster options?
 
-Yes. Its product lineup includes Virtualized On-Demand Clusters and Bare Metal Clusters. Request the supported size, topology, availability, software responsibilities and commercial terms for your job.
+Yes. Virtualized On-Demand Clusters let you scale up or down without reserving a long-term cluster, while Bare Metal Clusters give you dedicated hardware with full control for long-term training. Contact [hi@glows.ai](mailto:hi@glows.ai) with your workload to get the size, topology, and terms for your job.
 
 ### Can I price a cluster using a public H100 instance rate?
 
-Use a configuration-specific cluster quote. GPU variant, node composition, networking and purchasing terms must match before rates are comparable.
+For a single 8-GPU node, yes: an on-demand 8× H100 instance is listed at $20.72 per hour, exactly eight times the single-H100 rate. For multi-node clusters, use a configuration-specific quote, since node composition, networking, and purchasing terms affect the price.
 
 ### What should the first Glows.ai pilot establish?
 
