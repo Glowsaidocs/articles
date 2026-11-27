@@ -10,7 +10,7 @@ meta_description: "Rent RTX 4090 in the cloud hourly — Consider Glows.ai 24GB 
 
 # Rent RTX 4090 in the Cloud Hourly: Glows.ai Pricing and Setup Guide
 
-To rent RTX 4090 in the cloud hourly, compare the GPU's memory, the included instance resources and the billing rules. Glows.ai's confirmed November 2026 on-demand reference is $0.49 USD per GPU-hour for an RTX 4090 with 24GB VRAM, with per-second instance compute billing.
+To rent RTX 4090 in the cloud hourly, compare the GPU's memory, the included instance resources and the billing rules. Glows.ai's confirmed October 2026 on-demand reference is $0.49 USD per GPU-hour for an RTX 4090 with 24GB VRAM, with per-second instance compute billing.
 
 That makes Glows.ai a useful option for developers who want temporary GPU capacity for an experiment, a model evaluation or a compatible image-generation workflow. Confirm the current offer before ordering, then test the complete workload rather than choosing from the hourly figure alone.
 
@@ -20,7 +20,7 @@ The hourly rate is the unit used to describe compute cost. With per-second billi
 
 Compute charge = billable seconds ÷ 3,600 × $0.49.
 
-For one GPU at the November reference:
+For one GPU at the October reference:
 
 | Hypothetical billable duration | Compute charge, rounded |
 | --- | --- |
@@ -29,9 +29,9 @@ For one GPU at the November reference:
 | 8 hours | $3.92 |
 | 20 hours | $9.80 |
 
-These are compute-only illustrations, not workload benchmarks, guaranteed session lengths or complete invoices. Confirm the allocation size, current configuration and separately charged services. Keep any provider's rounding and minimum-charge rules in the comparison.
+These are compute-only illustrations, not workload benchmarks, guaranteed session lengths or complete invoices. Glows.ai has no minimum rental time, so a 45-minute session is billed as 45 minutes; when comparing providers, check their rounding and minimum-charge rules too.
 
-A visible hourly rate does not mean you must keep the GPU for an entire hour. Equally, per-second billing does not mean that setup, loading or allocated idle periods are free.
+A visible hourly rate does not mean you must keep the GPU for an entire hour: with per-second billing, you pay only for the time the instance runs, including setup, loading and idle time.
 
 ## Which jobs are worth testing on a 24GB GPU?
 
@@ -46,13 +46,13 @@ An RTX 4090 is worth evaluating when the complete recipe fits in 24GB of VRAM. T
 
 Do not infer a universal model-parameter limit from the card name. Quantization, context length, concurrency and implementation can change the working footprint substantially.
 
-If a workload needs more memory, compare a higher-memory configuration instead of forcing a compromised recipe. The right target is an accepted result at a useful cost, not the smallest possible hourly rate.
+If a workload needs more memory, compare a higher-memory GPU on Glows.ai, such as a 48GB L40S or an 80GB A100, instead of forcing a compromised recipe. The right target is an accepted result at a useful cost, not the smallest possible hourly rate.
 
 ## Why evaluate Glows.ai for RTX 4090 rental?
 
 Glows.ai combines the public reference rate with per-second compute billing, prepared AI environments and SSH access. Developers can start from a cataloged environment while retaining access to inspect packages, files and logs.
 
-The catalog includes PyTorch, vLLM, Ollama and ComfyUI options, including ComfyUI/FLUX.1-Kontext. Select the environment that matches the task. An image listing does not prove that every model weight or custom node is already included.
+The catalog includes PyTorch, vLLM, Ollama and ComfyUI options, including ComfyUI FLUX.1-Kontext. Select the environment that matches the task. An image listing does not prove that every model weight or custom node is already included.
 
 For shared projects, Glows.ai Team provides shared GPU resources, environments, datasets, permissions and quotas. That gives teams a way to organize access while keeping the run record and spending responsibilities explicit.
 
@@ -64,7 +64,7 @@ Choose one representative job and its acceptance condition: a validated checkpoi
 
 ### 2. Confirm the allocation
 
-Check that the offer is for the intended RTX 4090 configuration with 24GB per GPU. Confirm GPU count, CPU/RAM, storage arrangement, current rate and billing lifecycle. A multi-GPU or whole-node offer needs its own total price.
+On Glows.ai, an RTX 4090 instance comes with 24GB of VRAM, 10 vCPUs, 50 GB of RAM and 100 GB of storage, all included in the hourly rate. Check the current rate on the Create New page before launching. A multi-GPU or whole-node offer needs its own total price.
 
 ### 3. Inspect the environment
 
@@ -72,11 +72,11 @@ Confirm that the environment detects the GPU, the required software is installed
 
 ### 4. Test the real input shape
 
-Run the required resolution, context length, batch size or request overlap. A short demonstration can miss the memory peak that appears later in the real workload. Review output quality as well as whether the process finishes.
+Run the required resolution, context length, batch size or request overlap. A short demonstration can miss the memory peak that appears later in the real workload. Review output quality as well as whether the process finishes. The Monitor view on your instance page shows GPU memory over time, so you can see the peak instead of guessing.
 
 ### 5. Save, retrieve and release
 
-Keep the code revision, configuration, outputs and any necessary checkpoint state. Test the intended retrieval process, confirm retention terms and verify the resource's billing state when finished. Closing the browser does not establish that compute billing has ended.
+Keep the code revision, configuration, outputs and any necessary checkpoint state. Datadrive keeps your files after the instance is released, and Snapshot keeps the installed environment. When you finish, release the instance: billing stops at release, not when you close the browser.
 
 ## Budget the entire session
 
@@ -84,13 +84,13 @@ Suppose a hypothetical session uses 20 minutes for preparation, 60 minutes for t
 
 Counting only the task's 60 minutes would omit a third of the session's billable duration. Include retries and troubleshooting too, and add any separately charged services to the total.
 
-For repeated runs, record both preparation and execution time. A reusable environment may reduce later setup work, but verify that the required files and settings survive through the storage process you actually use.
+For repeated runs, record both preparation and execution time. Taking a Snapshot after setup lets later runs skip installation, and keeping models and data on Datadrive keeps the Snapshot small, which usually makes the next launch faster. You can also upload files to Datadrive without starting an instance.
 
 ## Rent a cloud RTX 4090 or build a local GPU PC?
 
 Cloud rental is attractive for occasional projects, temporary capacity and experiments where buying another machine would leave substantial unused capacity. A local machine may make sense for sustained use, local data requirements or an already-owned system.
 
-Compare the complete local system cost, electricity, maintenance and the hours of useful work you expect. Against that, use the cloud's total charges, data movement and operating effort. A card purchase price is not the cost of an entire working workstation.
+Compare the complete local system cost, electricity, maintenance and the hours of useful work you expect. Against that, use the cloud's total charges, data movement and operating effort; Glows.ai does not normally charge separately for data transfer. A card purchase price is not the cost of an entire working workstation.
 
 Dividing a hardware budget by $0.49 gives only a simplified compute-hours comparison. It does not establish a real break-even point without accounting for the other costs and the performance of the actual workload.
 
@@ -98,7 +98,7 @@ Dividing a hardware budget by $0.49 gives only a simplified compute-hours compar
 
 ### Is Glows.ai's RTX 4090 rate $0.49 per hour?
 
-That is the confirmed November 2026 on-demand reference in USD per GPU-hour. Reconfirm the current configuration and offer before ordering.
+That is the confirmed October 2026 on-demand reference in USD per GPU-hour. Reconfirm the current configuration and offer before ordering.
 
 ### Can a rented RTX 4090 run any LLM?
 
@@ -106,10 +106,10 @@ No. The whole inference or training recipe must fit the hardware and software en
 
 ### Do two 24GB cards automatically become one 48GB card?
 
-No. Software must explicitly distribute the work or model. The RTX 4090 does not support NVLink, and multiple cards do not automatically provide a single pooled memory space. Confirm any proposed multi-GPU configuration separately.
+No. Software must explicitly distribute the work or model. The RTX 4090 does not support NVLink, and multiple cards do not automatically provide a single pooled memory space. If you need 48GB on one card, Glows.ai offers 48GB GPUs such as the L40S.
 
 ### What should I check after a session?
 
-Confirm artifact retrieval, retention and resource billing state. A completed job, an unloaded model and a released allocation are different events.
+Make sure outputs are on Datadrive or downloaded, take a Snapshot if you want to reuse the environment, then release the instance. Billing stops at release; a finished job or an unloaded model does not stop it.
 
 Visit [Glows.ai](https://glows.ai/) and its [documentation](https://docs.glows.ai/) with one defined job. Use the published reference to start the budget and a measured pilot to decide whether the RTX 4090 is the right rental.
